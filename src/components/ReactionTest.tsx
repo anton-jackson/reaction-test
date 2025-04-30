@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { saveResult, getResultsUrl } from '../utils/api';
 
 const ReactionTest: React.FC = () => {
@@ -7,6 +7,7 @@ const ReactionTest: React.FC = () => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [reactionTime, setReactionTime] = useState<number | null>(null);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const instructionsRef = useRef<HTMLDivElement>(null);
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (event.code === 'Space' && stage === 'react' && startTime) {
@@ -36,12 +37,6 @@ const ReactionTest: React.FC = () => {
     }
   };
 
-  const handleInstructionsKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      handleInstructionsComplete();
-    }
-  };
-
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
@@ -54,6 +49,12 @@ const ReactionTest: React.FC = () => {
         setStartTime(Date.now());
       }, 5000);
       return () => clearTimeout(timer);
+    }
+  }, [stage]);
+
+  useEffect(() => {
+    if (stage === 'instructions' && instructionsRef.current) {
+      instructionsRef.current.focus();
     }
   }, [stage]);
 
@@ -147,11 +148,24 @@ const ReactionTest: React.FC = () => {
 
       {stage === 'instructions' && (
         <div 
-          style={{ textAlign: 'center', maxWidth: '80%' }}
-          onKeyPress={handleInstructionsKeyPress}
-          tabIndex={0}  // Make div focusable
+          ref={instructionsRef}
+          style={{ 
+            textAlign: 'center', 
+            maxWidth: '80%',
+            outline: 'none' // Remove focus outline
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleInstructionsComplete();
+            }
+          }}
+          tabIndex={0}
         >
-          <p style={textStyle}>Once these instructions go away, wait until the screen turns red, then hit the space bar to stop the timer.</p>
+          <p style={textStyle}>
+            Once these instructions go away, wait until the screen turns red, then hit the space bar to stop the timer.
+            <br />
+            <span style={{ fontSize: '18px', color: '#666' }}>(Press Enter to continue)</span>
+          </p>
           <button onClick={handleInstructionsComplete} style={buttonStyle}>
             I understand
           </button>
