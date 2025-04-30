@@ -25,12 +25,18 @@ A web application to measure and track reaction times. Built with React, TypeScr
 npm install
 ```
 
-2. Run development server:
+2. Configure AWS Credentials:
+   - Install AWS CLI: https://aws.amazon.com/cli/
+   - Run `aws configure` and enter your credentials
+   - These credentials will be used automatically by the application
+   - Never store AWS credentials in the project files
+
+3. Run development server:
 ```bash
 npm run dev
 ```
 
-3. Build for production:
+4. Build for production:
 ```bash
 npm run build
 ```
@@ -41,12 +47,13 @@ The application is deployed to:
 - Frontend: http://antonjackson.com/reaction-time.html
 - Data: http://antonjackson.com/results.csv
 
-## Environment Variables
+## Security Notes
 
-Create a `.env` file with:
-```
-VITE_API_KEY=your_api_key
-```
+This application uses the AWS SDK's default credential provider chain, which means:
+- For local development: Uses credentials from AWS CLI configuration
+- For Lambda: Uses IAM role attached to the Lambda function
+- Never stores credentials in code or environment files
+- Follows AWS security best practices
 
 ## License
 
