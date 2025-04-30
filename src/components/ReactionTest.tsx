@@ -120,6 +120,14 @@ const ReactionTest: React.FC = () => {
             >
               View All Results
             </a>
+            <div style={{ marginTop: '10px' }}>
+              <a 
+                href="#/admin" 
+                style={linkStyle}
+              >
+                Admin View
+              </a>
+            </div>
           </div>
         </div>
       )}
@@ -165,6 +173,14 @@ const ReactionTest: React.FC = () => {
             >
               View All Results
             </a>
+            <div style={{ marginTop: '10px' }}>
+              <a 
+                href="#/admin" 
+                style={linkStyle}
+              >
+                Admin View
+              </a>
+            </div>
           </div>
         </div>
       )}
