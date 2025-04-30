@@ -30,6 +30,18 @@ const ReactionTest: React.FC = () => {
     }
   }, [stage, startTime, age]);
 
+  const handleInputKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && age.trim() !== '') {
+      handleStart();
+    }
+  };
+
+  const handleInstructionsKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleInstructionsComplete();
+    }
+  };
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
@@ -104,6 +116,7 @@ const ReactionTest: React.FC = () => {
             type="number"
             value={age}
             onChange={(e) => setAge(e.target.value)}
+            onKeyPress={handleInputKeyPress}
             placeholder="Enter your age"
             style={inputStyle}
           />
@@ -133,7 +146,11 @@ const ReactionTest: React.FC = () => {
       )}
 
       {stage === 'instructions' && (
-        <div style={{ textAlign: 'center', maxWidth: '80%' }}>
+        <div 
+          style={{ textAlign: 'center', maxWidth: '80%' }}
+          onKeyPress={handleInstructionsKeyPress}
+          tabIndex={0}  // Make div focusable
+        >
           <p style={textStyle}>Once these instructions go away, wait until the screen turns red, then hit the space bar to stop the timer.</p>
           <button onClick={handleInstructionsComplete} style={buttonStyle}>
             I understand
