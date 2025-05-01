@@ -16,6 +16,7 @@ ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 const AdminView: React.FC = () => {
   const [results, setResults] = useState<ReactionResult[]>([]);
+  const [maxReactionTime, setMaxReactionTime] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +37,9 @@ const AdminView: React.FC = () => {
             };
           });
         
+        // Calculate max reaction time with 10% padding
+        const maxTime = Math.max(...parsedResults.map(r => r.reactionTime));
+        setMaxReactionTime(Math.ceil(maxTime * 1.1)); // Add 10% padding and round up
         setResults(parsedResults);
       } catch (error) {
         console.error('Error fetching results:', error);
@@ -65,12 +69,16 @@ const AdminView: React.FC = () => {
       x: {
         type: 'linear' as const,
         position: 'bottom' as const,
+        min: 0,
+        max: 80,
         title: {
           display: true,
           text: 'Age'
         }
       },
       y: {
+        min: 0,
+        max: maxReactionTime,
         title: {
           display: true,
           text: 'Reaction Time (ms)'

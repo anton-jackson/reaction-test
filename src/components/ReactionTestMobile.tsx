@@ -142,7 +142,7 @@ const ReactionTestMobile: React.FC = () => {
                 href="#/admin" 
                 style={linkStyle}
               >
-                Admin View
+                Results Graph View
               </a>
             </div>
           </div>
