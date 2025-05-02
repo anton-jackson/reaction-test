@@ -73,7 +73,14 @@ const AdminView: React.FC = () => {
         max: 80,
         title: {
           display: true,
-          text: 'Age'
+          text: 'Age in years'
+        },
+        ticks: {
+          stepSize: 5,
+          callback: function(tickValue: string | number) {
+            const v = typeof tickValue === 'string' ? parseFloat(tickValue) : tickValue;
+            return v % 10 === 0 ? v : '';
+          }
         }
       },
       y: {
@@ -82,6 +89,11 @@ const AdminView: React.FC = () => {
         title: {
           display: true,
           text: 'Reaction Time (ms)'
+        },
+        ticks: {
+          callback: function(value: string | number) {
+            return `${value} ms`;
+          }
         }
       }
     },
